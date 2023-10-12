@@ -3,6 +3,7 @@ package com.rocket.quizapp.service;
 import com.rocket.quizapp.entity.Question;
 import com.rocket.quizapp.entity.QuestionWrapper;
 import com.rocket.quizapp.entity.Quiz;
+import com.rocket.quizapp.entity.Response;
 import com.rocket.quizapp.repository.QuestionRepository;
 import com.rocket.quizapp.repository.QuizRepository;
 import lombok.AllArgsConstructor;
@@ -39,5 +40,19 @@ public class QuizService {
             questionForUser.add(qw);
         }
         return new ResponseEntity<>(questionForUser, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+        Quiz quiz = quizRepository.findById(id).get();
+        List<Question> questions = quiz.getQuestions();
+        int right = 0;
+        int i = 0;
+        for(Response response : responses){
+            if(response.getResponse().equals(questions.get(i).getRightAnswer())){
+                right++;
+            }
+            i++;
+        }
+        return new ResponseEntity<>(right, HttpStatus.OK);
     }
 }

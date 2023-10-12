@@ -2,6 +2,7 @@ package com.rocket.quizapp.controller;
 
 import com.rocket.quizapp.entity.Question;
 import com.rocket.quizapp.entity.QuestionWrapper;
+import com.rocket.quizapp.entity.Response;
 import com.rocket.quizapp.service.QuizService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,5 +26,10 @@ public class QuizController {
     @GetMapping("get/{id}")
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id){
         return quizService.getQuizQuestions(id);
+    }
+
+    @PostMapping("sumbit/{id}")
+    public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id, @RequestBody List<Response> responses){
+        return quizService.calculateResult(id, responses);
     }
 }
